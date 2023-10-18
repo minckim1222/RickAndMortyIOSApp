@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// Controller to control user settings
 class RMSettingsViewController: UIViewController {
 
     override func viewDidLoad() {
