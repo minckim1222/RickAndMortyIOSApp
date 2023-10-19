@@ -20,6 +20,10 @@ class RMService {
     /// Send the API call
     /// - Parameters:
     ///   - request: Request object
+    ///   - expecting: The type of of object we expect back
     ///   - completion: Callback with result or error
-    public func execute(_ request: RMRequest, completion: @escaping () -> Void) {}
+    public func execute<T: Codable>(
+        _ request: RMRequest,
+        expecting type: T.Type,
+        completion: @escaping (Result<T, Error>) -> Void) {}
 }

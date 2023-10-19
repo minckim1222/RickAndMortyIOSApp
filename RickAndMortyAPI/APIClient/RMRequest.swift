@@ -80,4 +80,7 @@ class RMRequest {
         return URL(string: urlString)
     }
     
+    /// Desired HTTPMethod
+    public let httpMethod = "GET"
+    
 }
