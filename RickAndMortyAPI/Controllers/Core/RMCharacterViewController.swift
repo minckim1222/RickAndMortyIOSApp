@@ -10,20 +10,24 @@ import UIKit
 /// Controller to search for character information
 class RMCharacterViewController: UIViewController {
 
+    let characterListView = CharacterListView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Characters"
-         
-        RMService.shared.execute(.listCharactersRequest, expecting: RMGetAllCharactersResponse.self) { result in
-            switch result {
-            case .success(let model):
-                print("Total " + String(model.info.count))
-                print("Pages " + String(model.info.pages))
-            case .failure(let error):
-                print(error)
-            }
-        }
+        layoutUI()
+    }
+    
+    private func layoutUI(){
+        
+        view.addSubview(characterListView)
+        NSLayoutConstraint.activate([
+            characterListView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            characterListView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            characterListView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            characterListView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
     }
     
 }
