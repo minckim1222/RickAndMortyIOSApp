@@ -8,9 +8,10 @@
 import UIKit
 
 /// View that handles list of characters, loader, etc
-class CharacterListView: UIView {
+class RMCharacterListView: UIView {
     
-    let viewModel = CharacterListViewViewModel()
+    /// Instantiate viewModel object
+    let viewModel = RMCharacterListViewViewModel()
     
     
     /// Activity indicator to show while loading API calls
@@ -28,7 +29,7 @@ class CharacterListView: UIView {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(RMCharacterCollectionViewCell.self, forCellWithReuseIdentifier: RMCharacterCollectionViewCell.reuseIdentifier)
         collectionView.isHidden = true
         collectionView.alpha = 0
         
@@ -66,9 +67,10 @@ class CharacterListView: UIView {
         ])
     }
     
+    /// Function that sets up the collectionView
     private func setUpCollectionView(){
-        collectionView.delegate = viewModel
-        collectionView.dataSource = viewModel
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
         DispatchQueue.main.asyncAfter(deadline: .now()+1, execute: {
             self.spinner.stopAnimating()
@@ -77,5 +79,29 @@ class CharacterListView: UIView {
                 self.collectionView.alpha = 1
             }
         })
+    }
+}
+
+
+/// Protocol stubs for CollectionView delegates
+extension RMCharacterListView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 20
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCollectionViewCell.reuseIdentifier, for: indexPath) as? RMCharacterCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        cell.backgroundColor = .systemGreen
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let bounds = UIScreen.main.bounds
+        let width = (bounds.width - 30) / 2
+        
+        return CGSize(width: width, height: width * 1.5)
     }
 }
