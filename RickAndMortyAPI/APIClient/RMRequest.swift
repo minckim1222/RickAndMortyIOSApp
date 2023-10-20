@@ -84,3 +84,8 @@ class RMRequest {
     public let httpMethod = "GET"
     
 }
+
+/// Extension for RMRequest convenience
+extension RMRequest {
+    static let listCharactersRequest = RMRequest(endpoint: .character)
+}

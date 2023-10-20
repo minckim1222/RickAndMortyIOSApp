@@ -31,6 +31,21 @@ class RMService {
         _ request: RMRequest,
         expecting type: T.Type,
         completion: @escaping (Result<T, Error>) -> Void) {
+            
+//            guard let url = request.url else { return }
+//            let task = URLSession.shared.dataTask(with: url) { data, _, error in
+//                guard let data = data else {return}
+//                do {
+//                    
+//                    let json = try JSONSerialization.jsonObject(with: data)
+//                    print(String(describing: json))
+//                    
+//                } catch {
+//                    completion(.failure(error))
+//                }
+//
+//            }
+//            task.resume()
         
             guard let urlRequest = self.request(from: request) else {
                 completion(.failure(RMServiceError.failedToCreateRequest))
@@ -45,8 +60,8 @@ class RMService {
                 
                 do {
                     
-                    let json = try JSONSerialization.jsonObject(with: data)
-                    print(String(describing: json))
+                    let result = try JSONDecoder().decode(type.self, from: data)
+                    completion(.success(result))
                     
                 } catch {
                     completion(.failure(error))
