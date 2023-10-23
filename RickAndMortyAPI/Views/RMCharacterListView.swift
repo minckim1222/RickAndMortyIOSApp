@@ -45,6 +45,7 @@ class RMCharacterListView: UIView {
         addConstraints()
         
         spinner.startAnimating()
+        viewModel.delegate = self
         viewModel.fetchCharacters()
         setUpCollectionView()
     }
@@ -69,43 +70,19 @@ class RMCharacterListView: UIView {
     
     /// Function that sets up the collectionView
     private func setUpCollectionView(){
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        collectionView.delegate = viewModel
+        collectionView.dataSource = viewModel
         
-        DispatchQueue.main.asyncAfter(deadline: .now()+1, execute: {
-            self.spinner.stopAnimating()
-            self.collectionView.isHidden = false
-            UIView.animate(withDuration: 0.4) {
-                self.collectionView.alpha = 1
-            }
-        })
     }
 }
 
-
-/// Protocol stubs for CollectionView delegates
-extension RMCharacterListView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCollectionViewCell.reuseIdentifier, for: indexPath) as? RMCharacterCollectionViewCell else {
-            return UICollectionViewCell()
+extension RMCharacterListView: RMCharacterListViewViewModelDelegate {
+    func didLoadInitialCharacters() {
+        collectionView.reloadData()
+        spinner.stopAnimating()
+        collectionView.isHidden = false
+        UIView.animate(withDuration: 0.4) {
+            self.collectionView.alpha = 1
         }
-        let viewModel = RMCharacterCollectionViewCellViewModel(
-            characterName: "Amin", 
-            characterStatus: RMCharacterStatus.alive,
-            characterImageUrl: URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg"))
-        cell.configure(with: viewModel)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let bounds = UIScreen.main.bounds
-        let width = (bounds.width - 30) / 2
-        
-        return CGSize(width: width, height: width * 1.5)
     }
 }
