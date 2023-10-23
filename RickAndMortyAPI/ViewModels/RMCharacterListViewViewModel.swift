@@ -68,6 +68,9 @@ class RMCharacterListViewViewModel: NSObject {
     var showLoadMoreIndicator: Bool {
         return apiInfo?.next != nil
     }
+    
+    /// Bool to check to see if we are alreading loading more characters in our network call
+    var isLoadingMoreCharacters: Bool = false
 }
 
 /// Protocol stubs for CollectionView delegates
@@ -122,6 +125,14 @@ extension RMCharacterListViewViewModel: UICollectionViewDelegate, UICollectionVi
 
 extension RMCharacterListViewViewModel: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard showLoadMoreIndicator else { return }
+        guard showLoadMoreIndicator, !isLoadingMoreCharacters else { return }
+        let offset = scrollView.contentOffset.y
+        let totalContentHeight = scrollView.contentSize.height
+        let totalScrollViewHeight = scrollView.frame.size.height
+        
+        if offset >= (totalContentHeight - totalScrollViewHeight - 120){
+            print("Load More Followers")
+            isLoadingMoreCharacters = true
+        }
     }
 }
