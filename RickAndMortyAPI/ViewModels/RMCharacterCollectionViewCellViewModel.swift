@@ -27,7 +27,7 @@ struct RMCharacterCollectionViewCellViewModel {
     
     /// Computed property to get the character's status
     var characterStatusText: String {
-        return characterStatus.rawValue
+        return "Status: \(characterStatus.text)"
     }
     
     /// Function to fetch the image for a character cell
