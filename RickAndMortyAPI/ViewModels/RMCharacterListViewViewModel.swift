@@ -13,8 +13,7 @@ class RMCharacterListViewViewModel: NSObject {
        RMService.shared.execute(.listCharactersRequest, expecting: RMGetAllCharactersResponse.self) { result in
            switch result {
            case .success(let model):
-               print("Total " + String(model.info.count))
-               print("Pages " + String(model.info.pages))
+               print("Example url: " + String(model.results.first?.image ?? "none"))
            case .failure(let error):
                print(error)
            }

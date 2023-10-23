@@ -94,7 +94,11 @@ extension RMCharacterListView: UICollectionViewDelegate, UICollectionViewDataSou
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RMCharacterCollectionViewCell.reuseIdentifier, for: indexPath) as? RMCharacterCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.backgroundColor = .systemGreen
+        let viewModel = RMCharacterCollectionViewCellViewModel(
+            characterName: "Amin", 
+            characterStatus: RMCharacterStatus.alive,
+            characterImageUrl: URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg"))
+        cell.configure(with: viewModel)
         return cell
     }
     
