@@ -98,6 +98,26 @@ extension RMCharacterListViewViewModel: UICollectionViewDelegate, UICollectionVi
         let character = characters[indexPath.row]
         delegate?.didSelectCharacter(character)
     }
+    
+    /// CollectionView function that adds our footer
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard kind == UICollectionView.elementKindSectionFooter, let footer = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: RMLoadingFooterCollectionReusableView.reuseIdentifier,
+            for: indexPath) as? RMLoadingFooterCollectionReusableView else {
+            return UICollectionReusableView()
+        }
+        footer.startAnimating()
+        return footer
+    }
+    
+    /// CollectionView function to specify our footer size
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard showLoadMoreIndicator else {
+            return .zero
+        }
+        return CGSize(width: collectionView.frame.width, height: 100)
+    }
 }
 
 extension RMCharacterListViewViewModel: UIScrollViewDelegate {

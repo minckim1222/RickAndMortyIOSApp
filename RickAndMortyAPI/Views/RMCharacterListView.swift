@@ -42,7 +42,9 @@ class RMCharacterListView: UIView {
         collectionView.register(RMCharacterCollectionViewCell.self, forCellWithReuseIdentifier: RMCharacterCollectionViewCell.reuseIdentifier)
         collectionView.isHidden = true
         collectionView.alpha = 0
-        
+        collectionView.register(RMLoadingFooterCollectionReusableView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                withReuseIdentifier: RMLoadingFooterCollectionReusableView.reuseIdentifier)
         return collectionView
     }()
     
